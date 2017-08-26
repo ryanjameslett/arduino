@@ -70,7 +70,12 @@ void setup() {
   strip.begin();
   
   for (int i = 0; i < NUM_PIXELS; i++) {
-    pixels[i] = BouncingPixel(N_LEDS, wheel(random(1,255)), random(0, N_LEDS-1), 1);
+    pixels[i] = BouncingPixel(
+      N_LEDS, 
+      wheel(random(1,255)), 
+      random(0, N_LEDS-1), 
+      random(-1,0)*-1
+    );
   }
 }
 
@@ -81,23 +86,19 @@ void loop() {
   for (int i = 0; i < NUM_PIXELS; i++) {
     loc = pixels[i].next();
     color = pixels[i].color();
-    
-    strip.setPixelColor(loc-1, 0);
+
+    if (loc > 0) {
+      strip.setPixelColor(loc-1, 0);
+    }
     strip.setPixelColor(loc, color);
-    strip.setPixelColor(loc+1, 0);
+
+    if (loc < N_LEDS - 1) {
+      strip.setPixelColor(loc+1, 0);
+    }
   }
  
   strip.show();
   delay(15);
 }
-
-
-
-
-
-
-
-
-
 
 
