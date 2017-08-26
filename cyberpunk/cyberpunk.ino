@@ -30,11 +30,10 @@ void setup() {
 }
 
 void loop() {
-flashRandom(5, 8);  // first number is 'wait' delay, shorter num == shorter twinkle
-flashRandom(5, 5);  // second number is how many neopixels to simultaneously light up
-flashRandom(5, 11);
 colorWipe(strip.Color(232, 100, 255), 50); // Red
+rainbowCycle(20);
 colorWipe(strip.Color(200, 200, 20), 50); // Green
+rainbowCycle(20);
 colorWipe(strip.Color(30, 200, 200), 50); // Blue
 rainbowCycle(20);
 }
@@ -87,38 +86,3 @@ uint32_t Wheel(byte WheelPos) {
   }
 }
 
-void flashRandom(int wait, uint8_t howmany) {
- 
-  for(uint16_t i=0; i<howmany; i++) {
-    // pick a random favorite color!
-    int c = random(FAVCOLORS);
-    int red = myColors[c][0];
-    int green = myColors[c][1];
-    int blue = myColors[c][2]; 
- 
-    // get a random pixel from the list
-    int j = random(strip.numPixels());
-    
-    // now we will 'fade' it in 5 steps
-    for (int x=0; x < 5; x++) {
-      int r = red * (x+1); r /= 5;
-      int g = green * (x+1); g /= 5;
-      int b = blue * (x+1); b /= 5;
-      
-      strip.setPixelColor(j, strip.Color(r, g, b));
-      strip.show();
-      delay(wait);
-    }
-    // & fade out in 5 steps
-    for (int x=5; x >= 0; x--) {
-      int r = red * x; r /= 5;
-      int g = green * x; g /= 5;
-      int b = blue * x; b /= 5;
-      
-      strip.setPixelColor(j, strip.Color(r, g, b));
-      strip.show();
-      delay(wait);
-    }
-  }
-  // LEDs will be off when done (they are faded to 0)
-}
