@@ -46,9 +46,9 @@ double GREEN = 0x800000;
 double BLUE = 0x0000FF;
 
 Adafruit_NeoPixel strip = Adafruit_NeoPixel(N_LEDS, PIN, NEO_GRB + NEO_KHZ800);
-int pixelVal[N_LEDS];
+double pixelVal[N_LEDS];
 // BouncingPixel greenPixel = BouncingPixel(N_LEDS, 0x00FF00);
-BouncingPixel redPixel = BouncingPixel(N_LEDS, 0xFF0000, 1);
+// BouncingPixel redPixel = BouncingPixel(N_LEDS, 0xFF0000, 1);
 BouncingPixel pixels[3] = {
   BouncingPixel(N_LEDS, RED, 1),
   BouncingPixel(N_LEDS, GREEN, 6),
@@ -57,36 +57,20 @@ BouncingPixel pixels[3] = {
 
 void setup() {
   strip.begin();
-
-  // Initialize pixel array
 }
 
 void loop() {
-
-  /*
-  for (int i = 0; i < N_LEDS; i++) {
-    pixelVal[i] = 0;
-  }
-  
   int loc;
   int color;
 
-  for (int j = 0; j <= 1; j++) {
-    loc = pixels[j].next();
-    color = pixels[j].color();
-    pixelVal[loc] = color;
+  for (int i = 0; i < 3; i++) {
+    loc = pixels[i].next();
+    color = pixels[i].color();
+    
+    strip.setPixelColor(loc-1, 0);
+    strip.setPixelColor(loc, color);
+    strip.setPixelColor(loc+1, 0);
   }
-
-  for (int k = 0; k < N_LEDS; k++) {
-    strip.setPixelColor(k, pixelVal[k]);
-  }
-  */
-
-  int loc = redPixel.next();
-  double color = redPixel.color();
-  strip.setPixelColor(loc-1, 0);
-  strip.setPixelColor(loc, color);
-  strip.setPixelColor(loc+1, 0);
  
   strip.show();
   delay(15);
