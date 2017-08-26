@@ -11,10 +11,14 @@ class BouncingPixel
     double _color;
 
   public:
+    BouncingPixel();
     BouncingPixel(int strip_size, double color, int init_pos, int dir);
     int next();
     double color();
 };
+
+BouncingPixel::BouncingPixel() {  
+}
 
 BouncingPixel::BouncingPixel(int strip_size, double color, int init_pos, int dir) {
   _color = color;
@@ -43,7 +47,7 @@ double BouncingPixel::color() {
 
 
 
-#define NUM_PIXELS 10
+#define NUM_PIXELS 11
 Adafruit_NeoPixel strip = Adafruit_NeoPixel(N_LEDS, PIN, NEO_GRB + NEO_KHZ800);
 
 // Input a value 0 to 255 to get a color value.
@@ -60,23 +64,14 @@ uint32_t wheel(byte WheelPos) {
   }
 }
 
-
-BouncingPixel pixels[NUM_PIXELS] = {
-  BouncingPixel(N_LEDS, wheel(random(1,255)), random(0, N_LEDS - 1), -1),
-  BouncingPixel(N_LEDS, wheel(random(1,255)), random(0, N_LEDS - 1), 1),
-  BouncingPixel(N_LEDS, wheel(random(1,255)), random(0, N_LEDS - 1), -1),
-  BouncingPixel(N_LEDS, wheel(random(1,255)), random(0, N_LEDS - 1), 1),
-  BouncingPixel(N_LEDS, wheel(random(1,255)), random(0, N_LEDS - 1), -1),
-  BouncingPixel(N_LEDS, wheel(random(1,255)), random(0, N_LEDS - 1), -1),
-  BouncingPixel(N_LEDS, wheel(random(1,255)), random(0, N_LEDS - 1), -1),
-  BouncingPixel(N_LEDS, wheel(random(1,255)), random(0, N_LEDS - 1), -1),
-  BouncingPixel(N_LEDS, wheel(random(1,255)), random(0, N_LEDS - 1), -1),
-  BouncingPixel(N_LEDS, wheel(random(1,255)), random(0, N_LEDS - 1), -1),
-};
-
+BouncingPixel pixels[NUM_PIXELS];
 
 void setup() {
   strip.begin();
+  
+  for (int i = 0; i < NUM_PIXELS; i++) {
+    pixels[i] = BouncingPixel(N_LEDS, wheel(random(1,255)), random(0, N_LEDS-1), 1);
+  }
 }
 
 void loop() {
