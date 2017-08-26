@@ -2,8 +2,11 @@
 
 #define N_LEDS 72
 #define PIN     1
-#define MAX_LOOPS 5
+#define NUM_PIXELS 11
 
+/**
+ * Defines a single pixel that bounces from one end of the light strip to the other.
+ */
 class BouncingPixel
 {
   private:
@@ -17,9 +20,20 @@ class BouncingPixel
     double color();
 };
 
+/**
+ * Empty constructor
+ */
 BouncingPixel::BouncingPixel() {  
 }
 
+/**
+ * Constructor for initializing the pixel.
+ * 
+ * @param int strip_size The length of the led strip
+ * @param double color The color of the pixel
+ * @param int init_pos The initial position of the pixel (must be between 0 and N_LEDS)
+ * @param int dir The initial direction of the pixel (1 goes up, -1 goes down)
+ */
 BouncingPixel::BouncingPixel(int strip_size, double color, int init_pos, int dir) {
   _color = color;
   _strip_size = strip_size;
@@ -27,6 +41,11 @@ BouncingPixel::BouncingPixel(int strip_size, double color, int init_pos, int dir
   _dir = dir;
 }
 
+/**
+ * Retrive the next position on the strip for the pixel
+ * 
+ * @return int
+ */
 int BouncingPixel::next() {
   _pos += _dir;
   if (_pos < 0) {
@@ -41,17 +60,30 @@ int BouncingPixel::next() {
   return _pos;
 }
 
+/**
+ * Get the color of the pixel
+ * 
+ * @return double
+ */
 double BouncingPixel::color() {
   return _color;
 }
 
-
-
-#define NUM_PIXELS 11
+/**
+ * Global vars
+ */
 Adafruit_NeoPixel strip = Adafruit_NeoPixel(N_LEDS, PIN, NEO_GRB + NEO_KHZ800);
+BouncingPixel pixels[NUM_PIXELS];
 
-// Input a value 0 to 255 to get a color value.
-// The colours are a transition r - g - b - back to r.
+/**
+ * Generate a color based on an value between 0 and 255
+ * The colours are a transition r - g - b - back to r.
+ * 
+ * Stole this from the 'cyberpunk' sketch
+ * 
+ * @param byte WheelPos the desired position on the color wheel
+ * @return strip.Color
+ */
 uint32_t wheel(byte WheelPos) {
   if(WheelPos < 85) {
    return strip.Color(WheelPos * 3, 255 - WheelPos * 3, 0);
@@ -64,8 +96,9 @@ uint32_t wheel(byte WheelPos) {
   }
 }
 
-BouncingPixel pixels[NUM_PIXELS];
-
+/**
+ * Initialize the project
+ */
 void setup() {
   strip.begin();
   
@@ -79,6 +112,9 @@ void setup() {
   }
 }
 
+/**
+ * Main loop
+ */
 void loop() {
   int loc;
   double color;
